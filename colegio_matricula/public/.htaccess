@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+   RewriteEngine On
+    
+    # --- AÑADIR ESTAS LÍNEAS ---
+    # Forzar a HTTPS
+      RewriteCond %{HTTPS} off
+     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    # --- ¡LÍNEA CRÍTICA! ---
+    # Especifica el directorio base para la re-escritura
+    RewriteBase /colegio_matricula/public/
+
+    # Si la solicitud no es un archivo existente...
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # ...y no es un directorio existente...
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # ...redirigirla a index.php (SIN ?url=)
+    RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+</IfModule>
